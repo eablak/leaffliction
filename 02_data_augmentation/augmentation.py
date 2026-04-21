@@ -141,7 +141,7 @@ def per_augmentation(target_path, paths, process, stop_count):
         if i == stop_count:
             break
     
-    print(f"{target_path} augmentation succesful!")
+    print(f"{target_path} augmentation successful!")
 
 
 def augmentation(directory, paths, process):
@@ -159,23 +159,39 @@ def augmentation(directory, paths, process):
         per_augmentation("Grape_spot", paths, process, 50)
 
 
+def change_directory():
+
+    path = os.getcwd()
+    path += "/../"
+
+    for x in os.listdir(path):
+        if x == "leaves":
+            os.rename(path+x,path+"augmented_directory")
+    
+    print("Directory name changed!")
+
+
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', help="Directory")
     parser.add_argument('-f', help="Image File")
+    parser.add_argument('-flag', help="Flag for change directory name")
 
     args = parser.parse_args()
     directory = args.d
     img_file = args.f
+    flag = args.flag
 
     if directory:
 
-        # python3 augmentation.py -d "Apple"
+        # python3 augmentation.py -d Apple -flag 1
 
         paths = get_directory(directory)
         augmentation(directory, paths, "directory")
+        if flag is not None and int(flag):
+            change_directory()
 
     elif img_file:
         
