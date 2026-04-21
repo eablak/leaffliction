@@ -10,10 +10,12 @@ from skimage.transform import rotate
 import matplotlib.pyplot as plt
 from deskew import determine_skew
 import matplotlib
+matplotlib.use("TkAgg")
 from wand.image import Image
 from skimage import img_as_ubyte
 from skimage.io import imread, imsave
 from block_distortion import distort_image
+from PIL import Image
 
 
 def handle_image(file_path):
@@ -56,15 +58,105 @@ def img_processing(img_path):
     # Distortion
     distorted_img = distort_image(src)
 
+    return [flipped_image, rotated_image, dst, sheared_img, cropped_img, distorted_img]
 
-    # Save processed images instead of displaying
-    cv2.imwrite("flipped_image.jpg", flipped_image)
-    cv2.imwrite("rotated_image.jpg", rotated_image)
-    cv2.imwrite("skewed_image.jpg", dst)
-    cv2.imwrite("sheared_image.jpg", sheared_img)
-    cv2.imwrite("cropped_image.jpg", cropped_img)
-    imsave("distorted_image.jpg", img_as_ubyte(distorted_img))
-    print("Images saved successfully!")
+
+def save_images(file_name, processed_images, process):
+
+    if process == "img_file":
+
+        x = file_name.split("/")
+        img_folder = x[0]
+        img_number = x[1].replace(".JPG", "")
+
+        path = os.getcwd()
+        path += "/../leaves/images/" + img_folder + "/"
+        path = Path(path)
+    
+    else:
+        path = file_name
+        img_number = path.split("/")[-1].replace(".JPG", "")
+        path = path.rsplit("/", 1)[0]
+        path = Path(path)
+
+    if path.exists():
+        cv2.imwrite(os.path.join(path, img_number + "_Flip.JPG"), processed_images[0])
+        cv2.imwrite(os.path.join(path, img_number + "_Rotate.JPG"), processed_images[1])
+        cv2.imwrite(os.path.join(path, img_number + "_Skew.JPG"), processed_images[2])
+        cv2.imwrite(os.path.join(path, img_number + "_Shear.JPG"), processed_images[3])
+        cv2.imwrite(os.path.join(path, img_number + "_Crop.JPG"), processed_images[4])
+        imsave(os.path.join(path, img_number + "_Distortion.JPG"), img_as_ubyte(processed_images[5]))
+    
+
+def display_images(processed_images):
+
+    fig = plt.figure(figsize=(10, 7))
+
+    titles = ["Flip", "Rotate", "Skew", "Shear", "Crop", "Distortion"]
+
+    for i, img in enumerate(processed_images):
+        ax = plt.subplot(2, 3, i+1)
+
+        if img.dtype != np.uint8:
+            img = cv2.normalize(img, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+        ax.imshow(img)
+        ax.axis('off')
+        plt.title(titles[i])
+
+    plt.show()
+
+
+def get_directory(dir_name):
+    
+    path = os.getcwd()
+    path += "/../leaves/images/"
+    path = Path(path)
+
+    paths = {}
+    for x in os.listdir(path):
+        if dir_name in x:
+            paths[x] = (str(path) + "/" + x)
+
+    return paths
+
+
+def per_augmentation(target_path, paths, process, stop_count):
+
+    files = os.listdir(paths[target_path])
+    static_files = []
+    augmentations =  ["_Flip", "_Rotate", "_Skew", "_Shear", "_Crop", "_Distortion"]
+
+    for file in files:
+        if not any(aug in file for aug in augmentations):
+            static_files.append(file)
+
+    for i in range(len(static_files)):
+        
+        img_path = paths[target_path] + "/" + static_files[i]
+        processed_images = img_processing(img_path)
+        save_images(img_path, processed_images, process)
+        if i == stop_count:
+            break
+    
+    print(f"{target_path} augmentation succesful!")
+
+
+def augmentation(directory, paths, process):
+
+    if directory == "Apple":
+        
+        per_augmentation("Apple_rust", paths, process, 220)
+        per_augmentation("Apple_Black_rot", paths, process, 160)
+        per_augmentation("Apple_scab", paths, process, 170)
+
+    if directory == "Grape":
+
+        per_augmentation("Grape_healthy", paths, process, 160)
+        per_augmentation("Grape_Black_rot", paths, process, 30)
+        per_augmentation("Grape_spot", paths, process, 50)
 
 
 
@@ -79,8 +171,18 @@ if __name__ == "__main__":
     img_file = args.f
 
     if directory:
-        print("directoryy")
+
+        # python3 augmentation.py -d "Apple"
+
+        paths = get_directory(directory)
+        augmentation(directory, paths, "directory")
+
     elif img_file:
-        # python3 augmentation.py -f "Apple_healty/image (1).JPG"
+        
+        # python3 augmentation.py -f "Apple_healthy/image (1).JPG"
+        
         img_path = handle_image(img_file)
-        img_processing(img_path)
+        processed_images = img_processing(img_path)
+        
+        save_images(img_file, processed_images, "img_file")
+        display_images(processed_images)
