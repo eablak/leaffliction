@@ -1,2 +1,4 @@
 /leaves/*
 /augmented_directory/*
+.*
+__pycache__

@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from deskew import determine_skew
 import matplotlib
 matplotlib.use("TkAgg")
-from wand.image import Image
+# from wand.image import Image
 from skimage import img_as_ubyte
 from skimage.io import imread, imsave
 from block_distortion import distort_image

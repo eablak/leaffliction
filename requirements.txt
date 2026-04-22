@@ -1,0 +1,8 @@
+opencv-python
+numpy
+scikit-image
+matplotlib
+deskew
+Pillow
+block-distortion
+plantcv
