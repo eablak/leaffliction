@@ -13,7 +13,32 @@ AUGMENTATION_DIR = PROJECT_ROOT / "02_data_augmentation"
 sys.path.insert(0, str(AUGMENTATION_DIR))
 os.chdir(AUGMENTATION_DIR)
 
-from augmentation import get_directory, change_directory, handle_image
+from augmentation import handle_image
+
+
+def get_directory(dir_name):
+
+    path = Path(os.getcwd()).parent / "leaves" / "images"
+
+    paths = {}
+    for x in os.listdir(path):
+        if dir_name in x:
+            paths[x] = str(path / x)
+
+    return list(paths.values())[0]
+
+
+def batch_maker(path, batch_size):
+    files = [
+        os.path.join(path, f) for f in os.listdir(path) if f.lower().endswith((".jpg"))
+    ]
+
+    for i in range(0, len(files), batch_size):
+        yield files[i : i + batch_size]
+
+
+def save_image(img, path):
+    cv.imwrite(path, img)
 
 
 def arr_to_xy(point):
@@ -23,45 +48,128 @@ def arr_to_xy(point):
     return arr.reshape(-1, 2)
 
 
-def img_transformation(path):
+def apply_g_blur(img):
+    return cv.GaussianBlur(img, (5, 5), 0)
+
+
+def aplly_mask(hsv, l, u):
+    return cv.inRange(hsv, l, u)
+
+
+def apply_roi(mask, img):
+    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    c = max(contours, key=cv.contourArea)
+    x, y, w, h = cv.boundingRect(c)
+    overlay = img.copy()
+    overlay[mask > 0] = (0, 255, 0)
+
+    roi = img.copy()
+    return cv.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+
+def apply_anlyze(img, leaf_mask):
+    pcv.params.sample_label = "plant"
+    return pcv.analyze.size(img=img, labeled_mask=leaf_mask)
+
+
+def apply_pseu(img, leaf_mask, save=None):
+    pcv.params.sample_label = "plant"
+
+    left, right, center_h = pcv.homology.y_axis_pseudolandmarks(img=img, mask=leaf_mask)
+    top, bottom, center_v = pcv.homology.x_axis_pseudolandmarks(img, leaf_mask)
+
+    if save:
+        pseu_img = img.copy()
+
+        points = [
+            (left, "r"),
+            (right, "b"),
+            (top, "g"),
+            (bottom, "c"),
+        ]
+
+        for pts, color in points:
+            pts = arr_to_xy(pts)
+
+            for x, y in pts:
+                cv.circle(pseu_img, (int(x), int(y)), 2, (0, 0, 255), -1)
+
+        return pseu_img
+    else:
+        return left, right, center_h, top, bottom, center_v
+
+
+def img_transformation(path, process=None):
     img = cv.imread(path)
     rgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-
     hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
     lower_green = np.array([30, 40, 40])
     upper_green = np.array([85, 255, 255])
 
-    g_blur = cv.GaussianBlur(img, (5, 5), 0)
+    if process == None:
+        g_blur = apply_g_blur(img)
 
-    leaf_mask = cv.inRange(hsv, lower_green, upper_green)
+        leaf_mask = aplly_mask(hsv, lower_green, upper_green)
 
-    contours, _ = cv.findContours(leaf_mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-    c = max(contours, key=cv.contourArea)
-    x, y, w, h = cv.boundingRect(c)
-    overlay = img.copy()
-    overlay[leaf_mask > 0] = (0, 255, 0)
+        roi = apply_roi(leaf_mask, img)
+        shape_image = apply_anlyze(img, leaf_mask)
+        left, right, center_h, top, bottom, center_v = apply_pseu(img, leaf_mask)
 
-    roi = img.copy()
-    cv.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
+    else:
 
-    pcv.params.sample_label = "plant"
-    shape_image = pcv.analyze.size(img=img, labeled_mask=leaf_mask)
+        if process == "blur":
+            return apply_g_blur(img)
 
-    # pcv.params.debug = "plot"
-    # pcv.params.debug_outdir = "./outputs"
+        elif process == "mask":
+            return aplly_mask(hsv, lower_green, upper_green)
 
-    pcv.params.sample_label = "plant"
-    left, right, center_h = pcv.homology.y_axis_pseudolandmarks(img=img, mask=leaf_mask)
-    top, bottom, center_v = pcv.homology.x_axis_pseudolandmarks(img, leaf_mask)
+        elif process == "roi":
+            leaf_mask = aplly_mask(hsv, lower_green, upper_green)
+            return apply_roi(leaf_mask, img)
 
+        elif process == "analyze":
+            leaf_mask = aplly_mask(hsv, lower_green, upper_green)
+            return apply_anlyze(img, leaf_mask)
+        else:
+            leaf_mask = aplly_mask(hsv, lower_green, upper_green)
+            return apply_pseu(img, leaf_mask, True)
+
+    return (
+        img,
+        g_blur,
+        leaf_mask,
+        roi,
+        shape_image,
+        left,
+        right,
+        center_h,
+        top,
+        bottom,
+        center_v,
+    )
+
+
+def display_images(
+    img,
+    g_blur,
+    leaf_mask,
+    roi,
+    shape_image,
+    left,
+    right,
+    center_h,
+    top,
+    bottom,
+    center_v,
+):
     plt.subplot(331), plt.imshow(img), plt.title("Original")
     plt.xticks([]), plt.yticks([])
 
     plt.subplot(332), plt.imshow(g_blur, cmap="gray"), plt.title("Gaussian blur")
     plt.xticks([]), plt.yticks([])
 
-    plt.subplot(333), plt.imshow(leaf_mask), plt.title("Mask")
+    plt.subplot(333), plt.imshow(leaf_mask, cmap="gray"), plt.title("Mask")
     plt.xticks([]), plt.yticks([])
 
     plt.subplot(334), plt.imshow(roi), plt.title("Roi objects")
@@ -74,14 +182,11 @@ def img_transformation(path):
     for point, color in [
         (left, "r"),
         (right, "b"),
-        (center_h, "y"),
         (top, "g"),
         (bottom, "c"),
-        (center_v, "m"),
     ]:
         point = arr_to_xy(point)
         plt.scatter(point[:, 0], point[:, 1], c=color, s=3)
-
     plt.xticks([]), plt.yticks([])
 
     plt.show()
@@ -90,25 +195,39 @@ def img_transformation(path):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", help="Directory")
+    parser.add_argument("-s", help="Source")
     parser.add_argument("-f", help="Image File")
-    parser.add_argument("-flag", help="Flag for change directory name")
+    parser.add_argument("-d", help="Destination")
+    parser.add_argument("-p", help="process", default=None)
 
     args = parser.parse_args()
-    directory = args.d
+    source = args.s
     img_file = args.f
-    flag = args.flag
+    dest = args.d
+    process = args.p
 
-    if directory:
+    all_process = ["blur", "mask", "roi", "analyze", "pseu"]
+    if process != None:
+        if process not in all_process:
+            raise ValueError("The process is not available")
 
-        # python3 transformation.py -d Apple -flag 1
+    if source and dest:
 
-        paths = get_directory(directory)
-        print(paths)
-        # transformation(directory, paths, "directory")
-        if flag is not None and int(flag):
-            change_directory()
-        # save_images(img_file, transformation, "img_file")
+        # python .\03_image_transformation\transformation.py -s Apple_Black_rot -d masked -p mask
+        dest_dir = Path.cwd().parent / dest
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        source_path = get_directory(source)
+        for batch in batch_maker(source_path, batch_size=4):
+            for img_path in batch:
+                img = img_transformation(img_path, process)
+                if img is None or isinstance(img, bool):
+                    continue
+                filename = os.path.basename(img_path)
+                name, ext = os.path.splitext(filename)
+
+                save_path = os.path.join(dest_dir, f"{name}_{process}{ext}")
+
+                save_image(img, save_path)
 
     elif img_file:
 
@@ -116,6 +235,33 @@ if __name__ == "__main__":
 
         img_path = handle_image(img_file)
         print(img_path)
-        img_transformation(img_path)
+        (
+            img,
+            g_blur,
+            leaf_mask,
+            roi,
+            shape_image,
+            left,
+            right,
+            center_h,
+            top,
+            bottom,
+            center_v,
+        ) = img_transformation(img_path)
 
-        # display_images(processed_images)
+        display_images(
+            img,
+            g_blur,
+            leaf_mask,
+            roi,
+            shape_image,
+            left,
+            right,
+            center_h,
+            top,
+            bottom,
+            center_v,
+        )
+
+    else:
+        raise ValueError("Something went wrong")
