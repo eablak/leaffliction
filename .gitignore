@@ -2,3 +2,4 @@
 /augmented_directory/*
 .*
 __pycache__
+*.jpg

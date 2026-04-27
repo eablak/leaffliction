@@ -18,7 +18,7 @@ from augmentation import handle_image
 
 def get_directory(dir_name):
 
-    path = Path(os.getcwd()).parent / "leaves" / "images"
+    path = Path(os.getcwd()).parent / "augmented_directory" / "images"
 
     paths = {}
     for x in os.listdir(path):
@@ -214,7 +214,7 @@ if __name__ == "__main__":
     if source and dest:
 
         # python .\03_image_transformation\transformation.py -s Apple_Black_rot -d masked -p mask
-        dest_dir = Path.cwd().parent / dest
+        dest_dir = Path.cwd().parent / dest / source
         dest_dir.mkdir(parents=True, exist_ok=True)
         source_path = get_directory(source)
         for batch in batch_maker(source_path, batch_size=4):
