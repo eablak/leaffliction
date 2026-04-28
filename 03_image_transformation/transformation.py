@@ -135,34 +135,10 @@ def img_transformation(path, process=None):
             leaf_mask = aplly_mask(hsv, lower_green, upper_green)
             return apply_pseu(img, leaf_mask, True)
 
-    return (
-        img,
-        g_blur,
-        leaf_mask,
-        roi,
-        shape_image,
-        left,
-        right,
-        center_h,
-        top,
-        bottom,
-        center_v,
-    )
+    return (img, g_blur, leaf_mask, roi, shape_image, left, right, center_h, top, bottom, center_v)
 
 
-def display_images(
-    img,
-    g_blur,
-    leaf_mask,
-    roi,
-    shape_image,
-    left,
-    right,
-    center_h,
-    top,
-    bottom,
-    center_v,
-):
+def display_images( img, g_blur, leaf_mask, roi, shape_image, left, right, center_h, top, bottom, center_v):
     plt.subplot(331), plt.imshow(img), plt.title("Original")
     plt.xticks([]), plt.yticks([])
 
@@ -213,55 +189,37 @@ if __name__ == "__main__":
 
     if source and dest:
 
-        # python .\03_image_transformation\transformation.py -s Apple_Black_rot -d masked -p mask
+        # python transformation.py -s Apple_Black_rot -d masked -p mask
+        # dosyaları parent class name altına kaydetmeli. apple/apple_healty apple/apple_rust vs. (pdf classification part)
+        
         dest_dir = Path.cwd().parent / dest / source
         dest_dir.mkdir(parents=True, exist_ok=True)
+        
         source_path = get_directory(source)
+        
         for batch in batch_maker(source_path, batch_size=4):
             for img_path in batch:
+                
                 img = img_transformation(img_path, process)
                 if img is None or isinstance(img, bool):
                     continue
+                
                 filename = os.path.basename(img_path)
                 name, ext = os.path.splitext(filename)
 
                 save_path = os.path.join(dest_dir, f"{name}_{process}{ext}")
-
                 save_image(img, save_path)
 
     elif img_file:
 
+        # ! dosya ismini leaves yerine "augmented_directory" den almalı pdf.
         # python3 transformation.py -f "Apple_healthy/image (1).JPG"
 
         img_path = handle_image(img_file)
         print(img_path)
-        (
-            img,
-            g_blur,
-            leaf_mask,
-            roi,
-            shape_image,
-            left,
-            right,
-            center_h,
-            top,
-            bottom,
-            center_v,
-        ) = img_transformation(img_path)
-
-        display_images(
-            img,
-            g_blur,
-            leaf_mask,
-            roi,
-            shape_image,
-            left,
-            right,
-            center_h,
-            top,
-            bottom,
-            center_v,
-        )
+        
+        img,g_blur,leaf_mask,roi,shape_image,left,right,center_h,top,bottom,center_v = img_transformation(img_path)
+        display_images( img, g_blur, leaf_mask, roi, shape_image, left, right, center_h, top, bottom, center_v)
 
     else:
         raise ValueError("Something went wrong")
