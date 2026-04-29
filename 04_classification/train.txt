@@ -1,0 +1,118 @@
+******************* GRAPE *******************
+
+137/138 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step - accuracy: 0.4397 - loss: 1.4366I0000 00:00:1777440289.567934   43490 dot_merger.cc:481] Merging Dots in computation: a_inference_one_step_on_data_2142__.43
+138/138 ━━━━━━━━━━━━━━━━━━━━ 19s 93ms/step - accuracy: 0.5971 - loss: 0.9971 - val_accuracy: 0.8114 - val_loss: 0.5046
+Epoch 2/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.8133 - loss: 0.4912 - val_accuracy: 0.8563 - val_loss: 0.3848
+Epoch 3/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.8699 - loss: 0.3648 - val_accuracy: 0.8663 - val_loss: 0.3554
+Epoch 4/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.8998 - loss: 0.2885 - val_accuracy: 0.9143 - val_loss: 0.2741
+Epoch 5/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.9238 - loss: 0.2359 - val_accuracy: 0.9198 - val_loss: 0.2628
+Epoch 6/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 37ms/step - accuracy: 0.9393 - loss: 0.1988 - val_accuracy: 0.9374 - val_loss: 0.2455
+Epoch 7/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 37ms/step - accuracy: 0.9549 - loss: 0.1602 - val_accuracy: 0.9220 - val_loss: 0.2479
+Epoch 8/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.9569 - loss: 0.1563 - val_accuracy: 0.9193 - val_loss: 0.2814
+Epoch 9/20
+138/138 ━━━━━━━━━━━━━━━━━━━━ 5s 38ms/step - accuracy: 0.9587 - loss: 0.1473 - val_accuracy: 0.9202 - val_loss: 0.2531
+69/69 ━━━━━━━━━━━━━━━━━━━━ 1s 6ms/step - accuracy: 0.9374 - loss: 0.2455 
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 126, 126, 32)        │             896 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 63, 63, 32)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 61, 61, 64)          │          18,496 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 30, 30, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 30, 30, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 28, 28, 128)         │          73,856 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 14, 14, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 25088)               │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │       3,211,392 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 4)                   │             516 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 9,915,470 (37.82 MB)
+ Trainable params: 3,305,156 (12.61 MB)
+ Non-trainable params: 0 (0.00 B)
+ Optimizer params: 6,610,314 (25.22 MB)
+WARNING:absl:You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+Model saved!
+
+
+
+******************* APPLE *******************
+
+161/163 ━━━━━━━━━━━━━━━━━━━━ 0s 35ms/step - accuracy: 0.3893 - loss: 1.3650I0000 00:00:1777440430.537980   45442 dot_merger.cc:481] Merging Dots in computation: a_inference_one_step_on_data_2142__.43
+163/163 ━━━━━━━━━━━━━━━━━━━━ 19s 78ms/step - accuracy: 0.5104 - loss: 1.1471 - val_accuracy: 0.6745 - val_loss: 0.8519
+Epoch 2/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.7201 - loss: 0.7408 - val_accuracy: 0.7894 - val_loss: 0.5899
+Epoch 3/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 38ms/step - accuracy: 0.7938 - loss: 0.5701 - val_accuracy: 0.8253 - val_loss: 0.5041
+Epoch 4/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 38ms/step - accuracy: 0.8309 - loss: 0.4921 - val_accuracy: 0.8523 - val_loss: 0.4525
+Epoch 5/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 38ms/step - accuracy: 0.8604 - loss: 0.4101 - val_accuracy: 0.6664 - val_loss: 1.0052
+Epoch 6/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 38ms/step - accuracy: 0.8708 - loss: 0.4067 - val_accuracy: 0.8716 - val_loss: 0.4034
+Epoch 7/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 38ms/step - accuracy: 0.8997 - loss: 0.3198 - val_accuracy: 0.8349 - val_loss: 0.5130
+Epoch 8/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.9091 - loss: 0.2989 - val_accuracy: 0.8735 - val_loss: 0.4593
+Epoch 9/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.9286 - loss: 0.2535 - val_accuracy: 0.8951 - val_loss: 0.4154
+Epoch 10/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.9358 - loss: 0.2337 - val_accuracy: 0.8839 - val_loss: 0.4410
+Epoch 11/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.9305 - loss: 0.2557 - val_accuracy: 0.8245 - val_loss: 0.6160
+Epoch 12/20
+163/163 ━━━━━━━━━━━━━━━━━━━━ 6s 37ms/step - accuracy: 0.9150 - loss: 0.3009 - val_accuracy: 0.8592 - val_loss: 0.5278
+82/82 ━━━━━━━━━━━━━━━━━━━━ 2s 13ms/step - accuracy: 0.8951 - loss: 0.4154
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 126, 126, 32)        │             896 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 63, 63, 32)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 61, 61, 64)          │          18,496 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 30, 30, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 30, 30, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 28, 28, 128)         │          73,856 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 14, 14, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 25088)               │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │       3,211,392 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 4)                   │             516 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 9,915,470 (37.82 MB)
+ Trainable params: 3,305,156 (12.61 MB)
+ Non-trainable params: 0 (0.00 B)
+ Optimizer params: 6,610,314 (25.22 MB)
+WARNING:absl:You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+Model saved!
+eablak@eablak:~/Desktop/leaffliction/04_classification$ 
+
+
