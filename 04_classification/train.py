@@ -59,8 +59,10 @@ def convert_images_to_df():
     print(label_count)
     print("\n","*"*60)
 
+    return df
 
-def resize_images():
+
+def get_images():
 
     im_size = 224
 
@@ -76,14 +78,84 @@ def resize_images():
             images.append(img)
             labels.append(data_path.name)
 
-    datagen = ImageDataGenerator(rescale = 1./255)
+    images = np.array(images)
+    return images
     
-    train_generator = datagen.flow_from_directory(str(dataset_path), target_size=(224, 224), batch_size=32)
-    images_batch, labels_batch = next(train_generator)
 
-    # rn per batch. write it into func and call it in model training time
-    print(images_batch.shape)
-    print(labels_batch.shape)
+def resize_images(images):
+
+    images = images.astype('float32') / 255.0
+
+    # images.shape
+    return images
+
+
+def label_encoding(df):
+
+    y = df["Labels"].values
+
+    le = LabelEncoder()
+    y = le.fit_transform(y)
+
+    print(y)
+    print("\n","*"*60)
+
+    return y
+
+def y_one_hot(y):
+
+    y = y.reshape(-1,1)
+
+    ct = ColumnTransformer([('my_ohe', OneHotEncoder(), [0])], remainder='passthrough')
+    Y = ct.fit_transform(y)
+
+    print(Y[:5])
+    print("\n","*"*60, "\n")
+
+    return Y
+
+
+def split_dataset(images, Y):
+
+    images, Y = shuffle(images, Y, random_state=1)
+
+    x_train, x_test, y_train, y_test = train_test_split(images, Y, test_size=0.2, random_state=415)
+
+    #inpect the shape of the training and testing.
+    print(x_train.shape)
+    print(y_train.shape)
+    print(x_test.shape)
+    print(y_test.shape)
+    print("\n","*"*60, "\n")
+
+    return x_train, x_test, y_train, y_test
+
+
+def efficientnetb0_implementation():
+    
+    NUM_CLASSES = 8
+    IMG_SIZE = 224
+    
+    inputs = layers.Input(shape=(IMG_SIZE, IMG_SIZE, 3))
+
+    # Using model without transfer learning
+    outputs = EfficientNetB0(include_top=True, weights=None, classes=NUM_CLASSES)(inputs)
+
+    model = tf.keras.Model(inputs, outputs)
+    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"] )
+
+    model.summary()
+    print("\n","*"*60, "\n")
+
+    return model
+
+
+def train_model(model, x_train, y_train):
+    
+    hist = model.fit(x_train, y_train, epochs=30, verbose=2)
+    
+
+
 
 
 if __name__ == "__main__":
@@ -91,5 +163,18 @@ if __name__ == "__main__":
     # Step 1: Data Preprocessing
 
     get_class_infos()
-    convert_images_to_df()
-    resize_images()
+    df = convert_images_to_df()
+    
+    images = get_images()
+    # images = resize_images(images) # call this while training
+
+    y = label_encoding(df)
+    Y = y_one_hot(y)
+
+    x_train, x_test, y_train, y_test = split_dataset(images, Y)
+
+
+    # Step 2: Model Training
+
+    model = efficientnetb0_implementation()
+    train_model(model, x_train, y_train)
