@@ -1,0 +1,109 @@
+eablak@eablak:~/Desktop/leaffliction/04_classification$ python3 train.py 
+Found 23994 files belonging to 8 classes.
+Using 19196 files for training.
+Found 23994 files belonging to 8 classes.
+Using 4798 files for validation.
+Model: "functional"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)             │ (None, 224, 224, 3)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ efficientnetb0 (Functional)          │ (None, 7, 7, 1280)          │       4,049,571 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ global_average_pooling2d             │ (None, 1280)                │               0 │
+│ (GlobalAveragePooling2D)             │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │         163,968 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 8)                   │           1,032 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 4,214,571 (16.08 MB)
+ Trainable params: 4,172,548 (15.92 MB)
+ Non-trainable params: 42,023 (164.16 KB)
+
+ ************************************************************ 
+
+Epoch 1/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 163ms/step - accuracy: 0.8337 - loss: 0.4927   
+Epoch 1: val_loss improved from None to 0.16676, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 164s 194ms/step - accuracy: 0.8988 - loss: 0.2972 - val_accuracy: 0.9454 - val_loss: 0.1668
+Epoch 2/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9568 - loss: 0.1270  
+Epoch 2: val_loss improved from 0.16676 to 0.13302, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 114ms/step - accuracy: 0.9588 - loss: 0.1201 - val_accuracy: 0.9519 - val_loss: 0.1330
+Epoch 3/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9645 - loss: 0.1005  
+Epoch 3: val_loss did not improve from 0.13302
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9645 - loss: 0.0998 - val_accuracy: 0.9433 - val_loss: 0.1949
+Epoch 4/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9731 - loss: 0.0784  
+Epoch 4: val_loss did not improve from 0.13302
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9730 - loss: 0.0811 - val_accuracy: 0.9556 - val_loss: 0.1423
+Epoch 5/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9808 - loss: 0.0557  
+Epoch 5: val_loss improved from 0.13302 to 0.10097, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 114ms/step - accuracy: 0.9818 - loss: 0.0544 - val_accuracy: 0.9664 - val_loss: 0.1010
+Epoch 6/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9795 - loss: 0.0616  
+Epoch 6: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9789 - loss: 0.0608 - val_accuracy: 0.9644 - val_loss: 0.1092
+Epoch 7/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9831 - loss: 0.0530  
+Epoch 7: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9832 - loss: 0.0509 - val_accuracy: 0.9677 - val_loss: 0.1045
+Epoch 8/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9846 - loss: 0.0449  
+Epoch 8: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 112ms/step - accuracy: 0.9844 - loss: 0.0462 - val_accuracy: 0.9714 - val_loss: 0.1019
+Epoch 9/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9842 - loss: 0.0488  
+Epoch 9: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9857 - loss: 0.0435 - val_accuracy: 0.9579 - val_loss: 0.1446
+Epoch 10/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9886 - loss: 0.0312  
+Epoch 10: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9884 - loss: 0.0331 - val_accuracy: 0.9654 - val_loss: 0.1130
+Epoch 11/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9852 - loss: 0.0419  
+Epoch 11: val_loss did not improve from 0.10097
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9873 - loss: 0.0355 - val_accuracy: 0.9685 - val_loss: 0.1046
+Epoch 12/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9880 - loss: 0.0347  
+Epoch 12: val_loss improved from 0.10097 to 0.09384, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 114ms/step - accuracy: 0.9893 - loss: 0.0313 - val_accuracy: 0.9710 - val_loss: 0.0938
+Epoch 13/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9901 - loss: 0.0283  
+Epoch 13: val_loss improved from 0.09384 to 0.08092, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9903 - loss: 0.0294 - val_accuracy: 0.9779 - val_loss: 0.0809
+Epoch 14/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9909 - loss: 0.0258      
+Epoch 14: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9890 - loss: 0.0335 - val_accuracy: 0.9669 - val_loss: 0.1166
+Epoch 15/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9892 - loss: 0.0292      
+Epoch 15: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9898 - loss: 0.0300 - val_accuracy: 0.9614 - val_loss: 0.1225
+Epoch 16/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9898 - loss: 0.0272  
+Epoch 16: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9919 - loss: 0.0226 - val_accuracy: 0.9748 - val_loss: 0.0905
+Epoch 17/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9922 - loss: 0.0250      
+Epoch 17: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9909 - loss: 0.0273 - val_accuracy: 0.9746 - val_loss: 0.0884
+Epoch 18/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 104ms/step - accuracy: 0.9912 - loss: 0.0275      
+Epoch 18: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 67s 112ms/step - accuracy: 0.9924 - loss: 0.0230 - val_accuracy: 0.9491 - val_loss: 0.1809
+Epoch 19/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9904 - loss: 0.0294  
+Epoch 19: val_loss did not improve from 0.08092
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9898 - loss: 0.0304 - val_accuracy: 0.9750 - val_loss: 0.0949
+Epoch 20/20
+600/600 ━━━━━━━━━━━━━━━━━━━━ 0s 105ms/step - accuracy: 0.9940 - loss: 0.0203      
+Epoch 20: val_loss improved from 0.08092 to 0.07437, saving model to best_model_loss.keras
+600/600 ━━━━━━━━━━━━━━━━━━━━ 68s 113ms/step - accuracy: 0.9937 - loss: 0.0192 - val_accuracy: 0.9800 - val_loss: 0.0744
+150/150 ━━━━━━━━━━━━━━━━━━━━ 5s 32ms/step - accuracy: 0.9800 - loss: 0.0744    
+Loss = 0.07436855882406235
+Validation Accuracy = 0.9799916744232178
