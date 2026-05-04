@@ -1,4 +1,4 @@
-## Convolution Operation in CNN
+## Convolution Operations in CNN
 
 The main reason for good performance of the convolution neural network is convolution operation. It is responsible for detecting the edges and the features of the images.
 
@@ -71,6 +71,7 @@ This is how convolution operation acts as a feature or edge detector in convolut
 
 In a single layer of convolutional neural network we will be using many number of such filters. Different filters will be detecting different features of these images. For example one filter might detect the horizontal edge while one filter might detect the vertical edge while one filter might detect circle feature in our images.
 
+### Convolutions on RGB images?
 
 <table align="center">
 <tr>
@@ -93,7 +94,7 @@ If we use c number of such filters on grayscale image then the resultant output 
 
 <table align="center">
 <tr>
-<td width="60%" align="center">
+<td width="50%" align="center">
 
 <img src="../readme_images/ConvolutionalNeuralNetwork/12_image.png" width="100%" style="; border-radius:12px;">
 
@@ -146,7 +147,7 @@ Single image of size nxnx3 convolve with fxfx3 generates only a single image of 
 We will use many such filters in a single layer of cnn. If we use 3 filters then in the output we will get three different images.
 </td>
 
-<td width="60%" align="center">
+<td width="70%" align="center">
 
 <img src="../readme_images/ConvolutionalNeuralNetwork/15_image.png" width="100%" style="; border-radius:12px;">
 
@@ -155,3 +156,23 @@ We will use many such filters in a single layer of cnn. If we use 3 filters then
 </tr>
 </table>
 
+### Max Pooling in Convolution Neural Network
+
+Max pooling selects the maximum element from the region of the  feature map  covered by the filter. Thus the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map.
+
+<p align="center">
+	<img src="../readme_images/ConvolutionalNeuralNetwork/21_image.png" width="70%" style="; border-radius:12px;">
+</p>
+
+#### Why do we need Max Pooling?
+
+1. Reduce image size, thus reduce computational cost
+2. Enhances Features
+
+### Avarage Pooling
+
+Avarage pooling computes the avarage of the elements present in the region  of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, avarage pooling gives the avarage of features present in a patch.
+
+<p align="center">
+	<img src="../readme_images/ConvolutionalNeuralNetwork/22_image.png" width="70%" style="; border-radius:12px;">
+</p>
