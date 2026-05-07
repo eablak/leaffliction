@@ -106,3 +106,8 @@ So this is how the compoete architecture of the CNN looks like.
 </p>
 
 In ANN, we use dense network of these neurons and layers can also be represented with fully connected layers. Thus total number of parameters are extremely high. But we can reduce the number of parameters using these convolution layers and max pooling layers.
+
+<hr>
+<b>Note:</b>
+
+After learning all CNN architecture if you want to create your CNN model from scratch you can follow [this repo](https://github.com/Coding-Lane/Image-Classification-CNN-Keras/blob/main/Solution%20-%20CNN%20Image%20Classification.ipynb). For leaffliction project, it is trained with combinations of; increased layers count, different activation functions, different dense of neurons and so on.. Because of we need wide model it was taking so much computation power while training and also taking so much time to train everytime. After some trials for training get the above 80 accuracy but it has to be above 90 for this project. So decided to contine with using pretrained model which is <b>EfficientNetB0.</b> You can use this CNN architecture for small model or more flexible threshold values.
