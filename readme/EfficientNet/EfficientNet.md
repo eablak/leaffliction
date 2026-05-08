@@ -131,7 +131,7 @@ width="100%" style="; border-radius:12px;">
 </tr>
 </table>
 
-<b>EfficientNet Bo Architecture:</b>
+<b>EfficientNet B0 Architecture:</b>
 
 <p align="center">
 	<img src="../readme_images/EfficientNet/06_image.png" width="100%" style="; border-radius:12px;">
@@ -155,3 +155,61 @@ First layer is a convolution layer with a size of 3x3, resolution image is 224x2
 </table>
 
 Now, on this network will perform <b>compound scaling</b> and we will upscale our EfficientNet model.
+
+
+### How much depth & width & resolution scaling ?
+
+<table align="center">
+<tr>
+<td width="50%" align="center" style="text-align:center;">
+
+<img 
+src="../readme_images/EfficientNet/09_image.png" 
+width="100%" style="; border-radius:12px;">
+</td>
+
+<td width="50%" align="center" style="vertical-align:middle; padding-right:20px; text-align:center;">
+
+<b>Compound Scaling Method</b> 
+<br><b>α</b> is d: depth scaling factor<br><b>β</b> is w: width scaling factor <br><b>γ</b> is r: resolution scaling factor <br><b>f</b> is network scaling factor
+
+</td>
+</tr>
+</table>
+
+We are using compound scaling method to know that up to what extent we can scale a network. α, β and γ is already fixed. We have only have to change the value of φ (phi). 
+
+<p align="center">
+	<img src="../readme_images/EfficientNet/08_image.png" width="30%" style="; border-radius:12px;">
+</p>
+
+The creators of EfficientNet applied the grid search technique to get α = 1.2, β = 1.1, γ = 1.15, φ = 1. These values means if the resolution of image is increase by 15% then depth of the model should increase by 20% and width of the model should increase by 10%. This is how they have fix these values in balance way.
+
+We are getting phi after performing grid search. When you perform grid search you will get a value of phi. We will apply this value of phi over this equation and we will get the know how much upscaling is required.
+
+
+#### EfficientNet B0-B7 Architecture
+
+<table align="center">
+<tr>
+<td width="50%" align="center" style="text-align:center;">
+
+All those B0-B7 networks blocks architecture will be same. Only change would be resolution, channels and layers.
+</td>
+
+<td width="50%" align="center" style="vertical-align:middle; padding-right:20px; text-align:center;">
+
+<img 
+src="../readme_images/EfficientNet/10_image.png" 
+width="100%" style="; border-radius:12px;">
+
+</td>
+</tr>
+</table>
+
+In every upsacale model we will have more resolution, more channels and more layers. In every upscale model we are having a image of high resolution and for every high resolution image we need more layers to process it, we need mor channels & feature maps to capture the information. Every new EfficentNet model will be a larger the previous model.
+
+<hr>
+<b><i>Note:</i></b> 
+
+If you want to create EfficientNet model from scratch you can follow [this](https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/CNN_architectures/pytorch_efficientnet.py) repo. In this project its preferd to use pretrained model from Keras library.
