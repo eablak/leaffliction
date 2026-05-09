@@ -6,3 +6,5 @@ deskew
 Pillow
 block-distortion
 plantcv
+tensorflow
+pandas
