@@ -1,5 +1,4 @@
 import argparse
-from pathlib import Path
 import os
 import sys
 import re
@@ -29,7 +28,7 @@ def analyze_data(image_paths):
 
     data_infos = {}
 
-    for image_path in image_paths:    
+    for image_path in image_paths:
         lst = os.listdir(image_path)
         data_infos[image_path.split("/")[-1]] = len(lst)
 
@@ -37,7 +36,7 @@ def analyze_data(image_paths):
 
 
 def visualize_data(directory, data_infos):
-    
+
     labels = []
     sizes = []
 
@@ -59,9 +58,8 @@ def visualize_data(directory, data_infos):
     plt.show()
 
 
-
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', help="Directory")
 
