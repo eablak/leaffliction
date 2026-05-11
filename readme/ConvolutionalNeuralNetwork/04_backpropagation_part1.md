@@ -1,13 +1,26 @@
 ## Backpropagation in CNN 
 ![](../readme_images/cnn_maths/00_image.jpg)
+
 ![](../readme_images/cnn_maths/01_image.jpg)
+
 ![](../readme_images/cnn_maths/02_image.jpg)
+
 ![](../readme_images/cnn_maths/03_image.jpg)
+
 ![](../readme_images/cnn_maths/04_image.jpg)
+
 ![](../readme_images/cnn_maths/05_image.jpg)
+
 ![](../readme_images/cnn_maths/06_image.jpg)
+
 ![](../readme_images/cnn_maths/07_image.jpg)
+
 ![](../readme_images/cnn_maths/08_image.jpg)
+
+*In the matrices, the circled values z11 and z12 should be circled in the opposite positions.*
+
 ![](../readme_images/cnn_maths/09_image.jpg)
+
 ![](../readme_images/cnn_maths/10_image.jpg)
+
 ![](../readme_images/cnn_maths/11_image.jpg)
